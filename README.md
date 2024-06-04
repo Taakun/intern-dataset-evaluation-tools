@@ -39,7 +39,7 @@ python combination.py --image_path {画像が格納されているフォルダ�
 
 - split.py  
 combination.pyで作成したcsvファイルを使用して、トレーニングデータ,　バリデーションデータ, テストデータに分割します。  
-ここでは、比較のために、バリデーションデータ, テストデータをそれぞれ10枚, 20枚に固定しました。  
+それぞれのデータ数は指定できるようになっています。  
 分割した結果は、csv形式で保存されます。
 ```
 cd 実行フォルダ
@@ -53,6 +53,7 @@ python split.py --train {データ数} --val {データ数} --test {データ数
 cd 実行フォルダ
 python train.py --version {バージョン番号}
 ```
+
 - test.py  
 学習したモデルに対して、推論を行い、精度を算出します。  
 また、精度をtensorboardに記録します。
@@ -60,6 +61,7 @@ python train.py --version {バージョン番号}
 cd 実行フォルダ
 python test.py --version {バージョン番号}
 ```
+
 - analysis.py  
 画像データセットに対して、アノテーション数を算出します。  
 また、各アノテーション数をtensorboardで可視化します。  
