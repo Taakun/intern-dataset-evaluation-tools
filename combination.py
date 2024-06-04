@@ -7,20 +7,18 @@ import pandas as pd
 
 def run(parser):
     # データセットの取得と整理
-    os.chdir('../')
-    DATA_DIR = '/mnt/nfs/kanai/projects/prj-dataset-evaluation/'
-    x_train_dir = os.path.join(DATA_DIR, f'{parser.path}/images/')
-    y_train_dir = os.path.join(DATA_DIR, f'{parser.path}/annotations/')
-    images = os.listdir(x_train_dir)
-    annotations = os.listdir(y_train_dir)
+    images_dir = os.path.join(parser.image_path)
+    annotations_dir = os.path.join(parser.annotation_path)
+    images = os.listdir(images_dir)
+    annotations = os.listdir(annotations_dir)
     images_list=[]
     images_list2=[]
     annotations_list=[]
     annotations_list2=[]
     for i in range(len(images)):
-        images_list.append([images[i], os.path.splitext(images[i])[0]])
+        images_list.append([f'{images_dir}/{images[i]}', os.path.splitext(images[i])[0]])
     for i in range(len(annotations)):
-        annotations_list.append([annotations[i], os.path.splitext(annotations[i])[0]])
+        annotations_list.append([f'{annotations_dir}/{annotations[i]}', os.path.splitext(annotations[i])[0]])
     for i in range(len(images_list)):
         for j in range(len(annotations_list)):
             if images_list[i][1]==annotations_list[j][1]:
@@ -38,7 +36,7 @@ def run(parser):
 
     # データセットを保存する
     dataset = pd.DataFrame(data=dict(image=images_new, annotation=annotations_new))
-    path = f'実行フォルダ/data/{parser.path}.csv'
+    path = 'data/dataset.csv'
     dataset.to_csv(path)
     print(path)
     print("Done")
@@ -51,7 +49,8 @@ def get_parser():
         add_help=True
     )
 
-    parser.add_argument('-p', '--path', required=True)
+    parser.add_argument('-ip', '--image_path', required=True)
+    parser.add_argument('-ap', '--annotation_path', required=True)
     
     return parser
 

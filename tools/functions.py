@@ -25,9 +25,3 @@ class Functions:
         ]
         return albu.Compose(_transform)
     
-    def crop_to_square(image):
-        size = min(image.size)
-        left, upper = (image.width - size) // 2, (image.height - size) // 2
-        right, bottom = (image.width + size) // 2, (image.height + size) // 2
-        return image.crop((left, upper, right, bottom))
-    

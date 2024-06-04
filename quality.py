@@ -1,6 +1,5 @@
 
 import argparse
-import os
 
 import cv2
 import numpy as np
@@ -8,29 +7,22 @@ import pandas as pd
 
 
 def run(parser):
-    # データセットの取得と整理
-    os.chdir('../')
-    DATA_DIR = '/mnt/nfs/kanai/projects/prj-dataset-evaluation/'
-    images_dir = os.path.join(DATA_DIR, f'{parser.path}/images/')
-    masks_dir = os.path.join(DATA_DIR, f'{parser.path}/annotations/')
-    
-    df_train = pd.read_csv(f'実行フォルダ/data/train_{parser.path}.csv', index_col=0)
-    df_val = pd.read_csv(f'実行フォルダ/data/val.csv', index_col=0)
-    df_test = pd.read_csv(f'実行フォルダ/data/test.csv', index_col=0)
+    # データセットの取得
+    dataset = pd.read_csv(f'data/split_dataset_ver{parser.version}.csv', index_col=0)
 
     data_info = {}
-    phase_list=[["all",df_train], ["train", df_train], ["val", df_val], ['test', df_test]]
-    for phase in phase_list:
-        data_info[f"{phase[0]}_img_path"] = [images_dir + rf"{file}" for file in phase[1]['image']]
-        data_info[f"{phase[0]}_mask_path"] = [masks_dir + rf"{file}" for file in phase[1]['annotation']]
+    for phase in ["train", "val", "test"]:
+        df_type = dataset.query(f'type == "{phase}"')
+        data_info[f"{phase}_img_path"] = [rf"{file}" for file in df_type['image']]
+        data_info[f"{phase}_mask_path"] = [rf"{file}" for file in df_type['annotation']]
 
     print(f"---{parser.data}_dataset---")
     data_sum = len(data_info[f"{parser.data}_img_path"])
     print(f"画像数: {data_sum}")
 
     # BRISQUE品質スコアを計算する
-    model_path = '実行フォルダ/brisque_model_live.yml' # BRISQUEモデルデータ
-    range_path = '実行フォルダ/brisque_range_live.yml' # BRISQUE範囲データ
+    model_path = 'yml/brisque_model_live.yml' # BRISQUEモデルデータ
+    range_path = 'yml/brisque_range_live.yml' # BRISQUE範囲データ
     obj = cv2.quality.QualityBRISQUE_create(model_path, range_path)
     scores=[]
     for f in data_info[f"{parser.data}_img_path"]:
@@ -53,7 +45,7 @@ def get_parser():
         add_help=True
     )
 
-    parser.add_argument('-p', '--path', required=True)
+    parser.add_argument('-ver', '--version', required=True)
     parser.add_argument('-d', '--data', required=True)
     
     return parser

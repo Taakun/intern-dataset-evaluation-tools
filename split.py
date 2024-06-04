@@ -1,40 +1,42 @@
 
-import os
+import argparse
+import random
 
 import pandas as pd
 
 
-def run():
-    # データセットの取得と整理
-    os.chdir('../')
-    vender1 = pd.read_csv('実行フォルダ/data/vender1.csv', index_col=0)
-    vender2 = pd.read_csv('実行フォルダ/data/vender2.csv', index_col=0)
+def run(parser):
+    train, val, test = parser.train, parser.val, parser.test
     
-    # vender1とvender2に共通の画像データをtestにする(20枚)
-    test_images = sorted(list(set(vender1['image'].values) & set(vender2['image'].values)))[:20]
-    test_annotations = sorted(list(set(vender1['annotation'].values) & set(vender2['annotation'].values)))[:20]
-    test = pd.DataFrame(data=dict(image=test_images, annotation=test_annotations))
-
-    # vender1とvender2に共通の画像データをvalidationにする(10枚)
-    val_images = sorted(list(set(vender1['image'].values) & set(vender2['image'].values)))[20:30]
-    val_annotations = sorted(list(set(vender1['annotation'].values) & set(vender2['annotation'].values)))[20:30]
-    val = pd.DataFrame(data=dict(image=val_images, annotation=val_annotations))
-
-    # これら以外をtrainにする
-    train_images_vender1 = sorted(list(set(vender1['image'].values)- set(test_images) - set(val_images)))
-    train_annotations_vender1 = sorted(list(set(vender1['annotation'].values) - set(test_annotations) - set(val_annotations)))
-    train_vender1 = pd.DataFrame(data=dict(image=train_images_vender1, annotation=train_annotations_vender1))
+    dataset = pd.read_csv('data/dataset.csv', index_col=0)
+    dataset['type'] = None
     
-    train_images_vender2 = sorted(list(set(vender2['image'].values) - set(test_images) - set(val_images)))
-    train_annotations_vender2 = sorted(list(set(vender2['annotation'].values) - set(test_annotations) - set(val_annotations)))
-    train_vender2 = pd.DataFrame(data=dict(image=train_images_vender2, annotation=train_annotations_vender2))
-
-    # データセットを保存する
-    test.to_csv('実行フォルダ/data/test.csv')
-    val.to_csv('実行フォルダ/data/val.csv')
-    train_vender1.to_csv('実行フォルダ/data/train_vender1.csv')
-    train_vender2.to_csv('実行フォルダ/data/train_vender2.csv')
+    num = [i for i in range(len(dataset))]
+    random.shuffle(num)
+    dataset.loc[num[0:train], 'type'] = 'train'
+    dataset.loc[num[train:train+val], 'type'] = 'val'
+    dataset.loc[num[train+val:train+val+test], 'type'] = 'test'
+    
+    dataset.to_csv(f'data/split_dataset_ver{parser.version}.csv')
+    
     print("Done")
+    
+def get_parser():
+    parser = argparse.ArgumentParser(
+        prog='Image segmentation using U-Net',
+        usage='python split.py',
+        description='This module demonstrates image segmentation using U-Net.',
+        add_help=True
+    )
+
+    parser.add_argument('-tr', '--train', required=True, type=int)
+    parser.add_argument('-val', '--val', required=True, type=int)
+    parser.add_argument('-te', '--test', required=True, type=int)
+    parser.add_argument('-ver', '--version', required=True)
+    
+    return parser
 
 if __name__ == "__main__":
-    run()
+    parser = get_parser().parse_args()
+    run(parser)
+    

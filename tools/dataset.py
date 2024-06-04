@@ -3,12 +3,15 @@ import numpy as np
 from PIL import Image, ImageOps
 from torch.utils.data import Dataset as BaseDataset
 
-#from tools.functions import Functions
 
 class Dataset(BaseDataset):
 
     # データセットのクラス名
-    CLASSES = ['backgrounds','leakage', 'rusted']
+    CLASSES = ['backgrounds','aeroplane','bicycle','bird','boat','bottle',
+                           'bus','car','cat','chair','cow', 
+                           'diningtable','dog','horse','motorbike','person', 
+                           'potted plant','sheep','sofa','train','monitor','unlabeled'
+                           ]
 
     def __init__(self, images_path, masks_path, segment_class, 
                  augmentation=None, preprocessing=None):
@@ -23,10 +26,8 @@ class Dataset(BaseDataset):
         return len(self.images_path)
 
     def __getitem__(self, i):
-        #print(self.images_path[i], self.masks_path[i])
         # 元画像の読み込み、整形
         image = Image.open(self.images_path[i])
-        #image = Functions().crop_to_square(image)
         image_resize = image.resize((128,128), Image.ANTIALIAS)
         image = np.asarray(image_resize)
         if len(image.shape)==2:
@@ -39,7 +40,6 @@ class Dataset(BaseDataset):
 
         # maskの読み込み、整形
         masks = Image.open(self.masks_path[i])
-        #masks = Functions().crop_to_square(masks)
         masks = masks.resize((128,128), Image.ANTIALIAS)
         masks = np.asarray(masks)
 
