@@ -2,7 +2,7 @@
 このリポジトリでは、セマンティックセグメンテーションを行うモデルの構築方法およびモデル学習の可視化方法をまとめました。  
 可視化には、tensorboardを使用しています。  
 
--- **note** --
+- **note**  
 これらのコードは、過去にインターンや個人学習で作成および使用したコードを汎用的に使えるように整理したものになっています。  
 参考になると幸いです。
 
@@ -90,28 +90,30 @@ python result.py --version {バージョン番号}
 
 ## 動作例
 - train.py
-<img width="575" alt="スクリーンショット 2024-03-08 17 16 07" src="https://github.com/ghelia/itd-dataset-evaluation-tools/assets/106829693/a497e803-b548-43da-90ac-47c40647a6d8">
+<img width="500" alt="仮画像" src="https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/edcd12d9-c050-4bf0-9c50-3aa5712fa19a">
 
 - test.py
-<img width="723" alt="仮画像" src="https://github.com/ghelia/itd-dataset-evaluation-tools/assets/106829693/01ec4882-745a-445c-bcc6-dbd6e51516ad">
+<img width="500" alt="仮画像" src="https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/2f695590-b325-48a6-8d41-f093fd3521aa">
 
 - analysis.py
-<img width="654" alt="仮画像" src="https://github.com/ghelia/itd-dataset-evaluation-tools/assets/106829693/3aae41ff-6ea2-41cc-84b0-21d726646a4a">
+<img width="500" alt="仮画像" src="https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/d94e176c-77f7-4381-8484-3cf17ca203be">
 
 - quality.py
-<img width="658" alt="スクリーンショット 2024-03-21 14 35 38" src="https://github.com/ghelia/itd-dataset-evaluation-tools/assets/106829693/f54d44fa-3435-4432-bfaa-aa469e070ebd">
+<img width="500" alt="スクリーンショット 2024-03-21 14 35 38" src="https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/3bdb2934-52ad-45ab-8fa4-da24494c74b0">
+
 
 ## tensorboardでの可視化の例
 - 学習時のf1scoreの推移
-![image](https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/55c45a1a-369f-4a99-816b-3f27aee7bb0c)
+<img width="500" alt="仮画像" src=https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/d9ee0dcb-6d4c-40c5-afa5-c337dd87044d>
 
 - テストデータを用いた推論結果
-![image](https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/7acc2e73-982c-4230-b3af-689831d60df0)
+<img width="500" alt="仮画像" src=https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/b02b51cc-59f0-4eaf-abe6-c789f5a4272e>
 
 - 画像ラベルの分布
-![image](https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/174d8885-0fe1-462a-b6bb-5f5f4e7ca383)
+<img width="500" alt="仮画像" src=https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/c3f2c450-4931-4459-9853-30a6e24efe72>
 
-- セグメンテーション結果  
+- セグメンテーション結果
+<img width="500" alt="仮画像" src=https://github.com/Taakun/intern-dataset-evaluation-tools/assets/106829693/a05f3aa0-b409-490c-879a-b7978b68b3a4>
 
 
 ## 参考コード
